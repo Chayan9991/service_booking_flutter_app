@@ -8,6 +8,7 @@ import 'package:service_booking_app/core/routes/app_routes.dart';
 import 'package:service_booking_app/core/utils/ui_utils.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/auth/cubit/auth_cubit.dart';
 import 'package:service_booking_app/presentation/screens/main/home_screen.dart';
+import 'package:service_booking_app/presentation/screens/main/main_layout.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -108,7 +109,7 @@ class _SignupScreenState extends State<SignupScreen> {
       listener: (context, state) {
         if (state.status == AuthStatus.authenticated) {
           final user = state.user;
-          getIt<AppRoutes>().pushAndRemoveUntil(HomeScreen(user: user!));
+          getIt<AppRoutes>().pushAndRemoveUntil(MainScreen());
         } else if (state.status == AuthStatus.error && state.error != null) {
           UiUtils.showSnackBar(context, message: state.error!, isError: true);
         }

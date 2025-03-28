@@ -55,6 +55,22 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<UserModel?> fetchUser() async {
+  try {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Fetch additional user data from Firestore
+      final userData = await _authRepository.getUserData(user.uid);
+      return userData;
+    }
+    return null;
+  } catch (e) {
+    emit(state.copyWith(status: AuthStatus.error, error: e.toString()));
+    return null;
+  }
+}
+
+
   Future<void> signUp({
     required String email,
     required String password,
@@ -69,7 +85,7 @@ class AuthCubit extends Cubit<AuthState> {
         email: email,
         phoneNumber: phoneNumber,
         password: password,
-      ); 
+      );
 
       emit(state.copyWith(status: AuthStatus.authenticated, user: user));
     } catch (e) {
@@ -77,12 +93,12 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> signOut()async{
-    try{
-        await _authRepository.signOut(); 
-        emit(state.copyWith(status: AuthStatus.unauthenticated, user: null)); 
-    }catch(e){
-       emit(state.copyWith(status: AuthStatus.error, error: e.toString()));
+  Future<void> signOut() async {
+    try {
+      await _authRepository.signOut();
+      emit(state.copyWith(status: AuthStatus.unauthenticated, user: null));
+    } catch (e) {
+      emit(state.copyWith(status: AuthStatus.error, error: e.toString()));
     }
   }
 }

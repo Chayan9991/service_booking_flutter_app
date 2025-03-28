@@ -11,6 +11,8 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
+/node_modules
+/lib/core/secrets/
 
 # IntelliJ related
 *.iml
