@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                     if (isLargeScreen) const SizedBox(height: 30),
                     _buildSectionHeader("Our Services🛠"),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 13),
                     CategoryListView(
                       onCategorySelected:
                           updateSelectedCategory, // ✅ Fixed Callback

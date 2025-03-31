@@ -62,8 +62,7 @@ class _CartScreenState extends State<CartScreen> {
                 state is ServicesLoaded ? state.cart : <ServiceModel>[];
             final subtotal = cart.fold<double>(
               0,
-              (sum, item) =>
-                  sum + _parsePrice(item.price, item.discount),
+              (sum, item) => sum + _parsePrice(item.price, item.discount),
             );
 
             if (cart.isEmpty) {
@@ -112,17 +111,32 @@ class _CartScreenState extends State<CartScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: ListTile(
-                          leading: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              item.imageUrl,
-                              width: 60,
-                              height: 60,
-                              fit: BoxFit.cover,
+                          leading: SizedBox(
+                            width: 75, // Ensure enough space for index & image
+                            child: Row(
+                              children: [
+                                Text(
+                                  "${index + 1}.",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.asset(
+                                    item.imageUrl,
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           title: Text(
-                            "${index + 1}. ${item.name}",
+                            item.name,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -136,8 +150,9 @@ class _CartScreenState extends State<CartScreen> {
                                   Text(
                                     "₹${originalPrice.toStringAsFixed(2)}",
                                     style: const TextStyle(
-                                      decoration: TextDecoration.lineThrough,
+                                      fontSize: 14,
                                       color: Colors.red,
+                                      decoration: TextDecoration.lineThrough,
                                     ),
                                   ),
                                   const SizedBox(width: 5),
@@ -151,7 +166,29 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                 ],
                               ),
-                              Text("Estimated Time: ${item.estimatedTime}"),
+                              const SizedBox(height: 2),
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: "Estimated Time: ",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey.shade700,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: item.estimatedTime,
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                           trailing: IconButton(

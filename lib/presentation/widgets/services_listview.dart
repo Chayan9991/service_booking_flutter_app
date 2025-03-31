@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_booking_app/data/model/category_model.dart';
 import 'package:service_booking_app/data/model/services_model.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/main/cubit/main_cubit.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class ServicesListView extends StatelessWidget {
   final Category selectedCategory;
@@ -145,24 +144,12 @@ class ServiceCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: CachedNetworkImage(
-                    imageUrl: serviceModel.imageUrl.toString(),
-                    height: 120,
+                  child: Image.asset(
+                    //fadein.networkImage for network image load
+                    serviceModel.imageUrl,
+                    height: 100,
                     width: double.infinity,
                     fit: BoxFit.cover,
-                    placeholder:
-                        (context, url) => const Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.blueAccent,
-                          ),
-                        ),
-                    errorWidget:
-                        (context, url, error) => const Icon(
-                          Icons.error,
-                          size: 40,
-                          color: Colors.grey,
-                        ),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -280,9 +267,9 @@ class ServiceCard extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: FadeInImage.memoryNetwork(
-                        placeholder: kTransparentImage,
-                        image: serviceModel.imageUrl,
+                      child: Image.asset(
+                        //fadein.networkImage for network image load
+                        serviceModel.imageUrl,
                         height: 100,
                         width: double.infinity,
                         fit: BoxFit.cover,
@@ -472,7 +459,10 @@ class ServiceCard extends StatelessWidget {
 
                     child: Text(
                       isBooked ? "Added" : "Add Service",
-                      style: TextStyle(fontSize: isBooked ? 12 : 12),
+                      style: TextStyle(
+                        fontSize: isBooked ? 12 : 12,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 );

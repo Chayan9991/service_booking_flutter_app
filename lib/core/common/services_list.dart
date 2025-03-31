@@ -61,13 +61,12 @@ List<Map<String, dynamic>> services = [
     "categoryId": 1,
     "name": "AC Installation",
     "price": "50/unit",
-    "discount": 10, 
+    "discount": 10,
     "estimatedTime": "2 hours",
     "rating": 4.7,
     "reviews": 120,
     "isPopular": false,
-    "imageUrl":
-        "https://images.pexels.com/photos/5463576/pexels-photo-5463576.jpeg",
+    "imageUrl": "assets/images/ac_installation.jpeg",
     "details": "Professional AC installation ensuring safety and efficiency.",
   },
   {
@@ -80,8 +79,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.5,
     "reviews": 85,
     "isPopular": false,
-    "imageUrl":
-        "https://images.pexels.com/photos/5463581/pexels-photo-5463581.jpeg",
+    "imageUrl": "assets/images/ac_repair.jpeg",
     "details": "Fixing cooling issues, leaks, and other AC malfunctions.",
   },
   {
@@ -94,8 +92,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.8,
     "reviews": 150,
     "isPopular": false,
-    "imageUrl":
-        "https://images.pexels.com/photos/3964537/pexels-photo-3964537.jpeg",
+    "imageUrl": "assets/images/bedbug_treatment.jpeg",
     "details": "Top-up your AC gas to restore cooling efficiency.",
   },
 
@@ -110,8 +107,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.6,
     "reviews": 200,
     "isPopular": true,
-    "imageUrl":
-        "https://images.pexels.com/photos/4239040/pexels-photo-4239040.jpeg",
+    "imageUrl": "assets/images/home_cleaning.jpg",
     "details": "Deep cleaning service for a spotless and fresh home.",
   },
   {
@@ -124,8 +120,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.3,
     "reviews": 75,
     "isPopular": false,
-    "imageUrl":
-        "https://images.pexels.com/photos/6872150/pexels-photo-6872150.jpeg",
+    "imageUrl": "assets/images/car_cleaning.jpeg",
     "details": "Interior and exterior cleaning for your car.",
   },
   {
@@ -138,8 +133,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.4,
     "reviews": 90,
     "isPopular": false,
-    "imageUrl":
-        "https://images.pexels.com/photos/4098778/pexels-photo-4098778.jpeg",
+    "imageUrl": "assets/images/sofa_cleaning.jpeg",
     "details": "Get your sofa cleaned and refreshed with professional care.",
   },
 
@@ -154,8 +148,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.7,
     "reviews": 95,
     "isPopular": false,
-    "imageUrl":
-        "https://images.pexels.com/photos/5798978/pexels-photo-5798978.jpeg",
+    "imageUrl": "assets/images/interior_painting.jpeg",
     "details": "Enhance your interiors with high-quality paints and finishes.",
   },
   {
@@ -168,8 +161,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.8,
     "reviews": 110,
     "isPopular": false,
-    "imageUrl":
-        "https://images.pexels.com/photos/5799130/pexels-photo-5799130.jpeg",
+    "imageUrl": "assets/images/exterior_painting.jpeg",
     "details": "Weather-resistant painting to protect and beautify your walls.",
   },
 
@@ -184,8 +176,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.7,
     "reviews": 140,
     "isPopular": true,
-    "imageUrl":
-        "https://images.pexels.com/photos/29871587/pexels-photo-29871587.jpeg",
+    "imageUrl": "assets/images/wiring_installation.jpeg",
     "details": "Safe and efficient wiring solutions for homes and offices.",
   },
   {
@@ -198,8 +189,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.5,
     "reviews": 110,
     "isPopular": false,
-    "imageUrl":
-        "https://images.pexels.com/photos/257736/pexels-photo-257736.jpeg",
+    "imageUrl": "assets/images/switchboard_repair.jpeg",
     "details": "Fix faulty switchboards and ensure safe electricity flow.",
   },
 
@@ -214,8 +204,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.6,
     "reviews": 130,
     "isPopular": false,
-    "imageUrl":
-        "https://images.pexels.com/photos/4097735/pexels-photo-4097735.jpeg",
+    "imageUrl": "assets/images/cockroach_control.jpeg",
     "details": "Effective solutions to eliminate cockroach infestations.",
   },
   {
@@ -228,8 +217,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.7,
     "reviews": 140,
     "isPopular": false,
-    "imageUrl":
-        "https://images.pexels.com/photos/4098576/pexels-photo-4098576.jpeg",
+    "imageUrl": "assets/images/bedbug_treatment.jpeg",
     "details": "Get rid of bed bugs with professional pest control treatment.",
   },
 
@@ -244,8 +232,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.6,
     "reviews": 130,
     "isPopular": true,
-    "imageUrl":
-        "https://images.pexels.com/photos/4700389/pexels-photo-4700389.jpeg",
+    "imageUrl": "assets/images/washing_repair.jpeg",
     "details":
         "Fixing leaks, drum issues, and electrical faults in washing machines.",
   },
@@ -259,8 +246,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.7,
     "reviews": 100,
     "isPopular": true,
-    "imageUrl":
-        "https://images.pexels.com/photos/30425504/pexels-photo-30425504.jpeg",
+    "imageUrl": "assets/images/tv_repair.jpeg",
     "details": "Screen, speaker, and motherboard repairs for all TV brands.",
   },
 
@@ -275,8 +261,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.5,
     "reviews": 80,
     "isPopular": true,
-    "imageUrl":
-        "https://images.pexels.com/photos/6263144/pexels-photo-6263144.jpeg",
+    "imageUrl": "assets/images/home_cleaning.jpg",
     "details": "Leak repairs, pipe fittings, and bathroom installations.",
   },
   {
@@ -289,8 +274,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.6,
     "reviews": 90,
     "isPopular": false,
-    "imageUrl":
-        "https://images.pexels.com/photos/5974408/pexels-photo-5974408.jpeg",
+    "imageUrl": "assets/images/carpentary.jpeg",
     "details": "Furniture repair, door fittings, and custom woodwork.",
   },
   {
@@ -303,8 +287,7 @@ List<Map<String, dynamic>> services = [
     "rating": 4.8,
     "reviews": 120,
     "isPopular": false,
-    "imageUrl":
-        "https://images.pexels.com/photos/5230937/pexels-photo-5230937.jpeg",
+    "imageUrl": "assets/images/gardening.jpeg",
     "details": "Landscaping, plant maintenance, and garden cleaning.",
   },
 ];
