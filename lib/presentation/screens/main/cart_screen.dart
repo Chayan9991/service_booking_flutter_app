@@ -2,9 +2,9 @@ import 'dart:js' as js;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_booking_app/core/dependency_injection/service_locator.dart';
+import 'package:service_booking_app/data/model/services_model.dart';
 import 'package:service_booking_app/logic/services/razorpay_service.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/main/cubit/main_cubit.dart';
-import 'package:service_booking_app/presentation/bloc_cubits/payment/cubit/payment_cubit.dart';
 import 'package:service_booking_app/presentation/screens/main/order_receipt_screen.dart';
 
 class CartScreen extends StatefulWidget {
@@ -59,11 +59,11 @@ class _CartScreenState extends State<CartScreen> {
         child: BlocBuilder<MainCubit, MainState>(
           builder: (context, state) {
             final cart =
-                state is ServicesLoaded ? state.cart : <Map<String, dynamic>>[];
+                state is ServicesLoaded ? state.cart : <ServiceModel>[];
             final subtotal = cart.fold<double>(
               0,
               (sum, item) =>
-                  sum + _parsePrice(item["price"], item["discount"] ?? 0),
+                  sum + _parsePrice(item.price, item.discount),
             );
 
             if (cart.isEmpty) {
@@ -99,11 +99,11 @@ class _CartScreenState extends State<CartScreen> {
                     itemBuilder: (context, index) {
                       final item = cart[index];
                       final originalPrice = double.parse(
-                        item["price"].split('/')[0],
+                        item.price.split('/')[0],
                       );
                       final priceAfterDiscount = _parsePrice(
-                        item["price"],
-                        item["discount"] ?? 0,
+                        item.price,
+                        item.discount,
                       );
                       return Card(
                         margin: const EdgeInsets.only(bottom: 12),
@@ -115,14 +115,14 @@ class _CartScreenState extends State<CartScreen> {
                           leading: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: Image.network(
-                              item["imageUrl"],
+                              item.imageUrl,
                               width: 60,
                               height: 60,
                               fit: BoxFit.cover,
                             ),
                           ),
                           title: Text(
-                            "${index + 1}. ${item["name"]}",
+                            "${index + 1}. ${item.name}",
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -151,7 +151,7 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                 ],
                               ),
-                              Text("Estimated Time: ${item["estimatedTime"]}"),
+                              Text("Estimated Time: ${item.estimatedTime}"),
                             ],
                           ),
                           trailing: IconButton(
@@ -225,7 +225,7 @@ class _CartScreenState extends State<CartScreen> {
                         style: TextStyle(fontSize: 12, color: Colors.grey),
                       ),
                       Text(
-                        "📞 8481051782 | ✉️ himanshukrprasad9112@gmail.com",
+                        "📞 7384064561 | ✉️ barmanchayan10@gmail.com",
                         style: TextStyle(fontSize: 12, color: Colors.grey),
                       ),
                     ],

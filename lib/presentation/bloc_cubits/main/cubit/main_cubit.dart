@@ -5,13 +5,14 @@ import 'package:equatable/equatable.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:service_booking_app/core/common/services_list.dart';
+import 'package:service_booking_app/data/model/services_model.dart';
 
 part 'main_state.dart';
 
 class MainCubit extends Cubit<MainState> {
   MainCubit() : super(MainInitial());
 
-  List<Map<String, dynamic>> _cart = []; // Cart list to track selected services
+  List<ServiceModel> _cart = []; // Cart list to track selected services
 
   // Load Categories
   Future<void> loadCategories() async {
@@ -29,7 +30,9 @@ class MainCubit extends Cubit<MainState> {
       emit(MainLoading());
 
       List<Map<String, dynamic>> filteredServices =
-          services.where((service) => service["categoryId"] == categoryId).toList();
+          services
+              .where((service) => service["categoryId"] == categoryId)
+              .toList();
 
       emit(ServicesLoaded(filteredServices, cart: _cart));
     } catch (e) {
@@ -47,8 +50,8 @@ class MainCubit extends Cubit<MainState> {
     }
   }
 
-  void addToCart(Map<String, dynamic> service) {
-    if (!_cart.any((item) => item["id"] == service["id"])) {
+  void addToCart(ServiceModel service) {
+    if (!_cart.any((item) => item.id == service.id)) {
       _cart = List.from(_cart)..add(service); // Ensure a new list is created
       final currentState = state;
       if (currentState is ServicesLoaded) {
@@ -59,8 +62,9 @@ class MainCubit extends Cubit<MainState> {
     }
   }
 
-  void removeFromCart(Map<String, dynamic> service) {
-    _cart = List.from(_cart)..removeWhere((item) => item["id"] == service["id"]);
+  void removeFromCart(ServiceModel service) {
+    _cart = List.from(_cart)
+      ..removeWhere((item) => item.id == service.id);
     final currentState = state;
     if (currentState is ServicesLoaded) {
       emit(ServicesLoaded(List.from(currentState.services), cart: _cart));

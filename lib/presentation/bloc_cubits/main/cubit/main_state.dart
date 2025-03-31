@@ -30,7 +30,7 @@ final class CategoryLoadError extends MainState {
 
 class ServicesLoaded extends MainState {
   final List<Map<String, dynamic>> services;
-  final List<Map<String, dynamic>> cart;
+  final List<ServiceModel> cart;
 
   const ServicesLoaded(this.services, {required this.cart});
 
@@ -49,7 +49,7 @@ final class ServicesLoadError extends MainState {
 
 //cart
 class CartUpdated extends MainState {
-  final List<Map<String, dynamic>> cart;
+  final List<dynamic> cart;
 
   const CartUpdated(this.cart);
 

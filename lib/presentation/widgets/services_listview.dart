@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_booking_app/data/model/category_model.dart';
+import 'package:service_booking_app/data/model/services_model.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/main/cubit/main_cubit.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ServicesListView extends StatelessWidget {
   final Category selectedCategory;
@@ -30,24 +32,24 @@ class ServicesListView extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       cacheExtent: 500,
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 160,
-        mainAxisExtent: 280,
+        maxCrossAxisExtent: 180,
+        mainAxisExtent: 250,
         crossAxisSpacing: isLargeScreen ? 40.0 : 20.0,
         mainAxisSpacing: 12,
       ),
       itemCount: services.length,
       itemBuilder: (context, index) {
-        final service = services[index];
-        return ServiceCard(service: service);
+        final service = ServiceModel.fromMap(services[index]);
+        return ServiceCard(serviceModel: service);
       },
     );
   }
 }
 
 class ServiceCard extends StatelessWidget {
-  final Map<String, dynamic> service;
+  final ServiceModel serviceModel;
 
-  const ServiceCard({super.key, required this.service});
+  const ServiceCard({super.key, required this.serviceModel});
 
   static const _ratingIcon = Icon(Icons.star, color: Colors.amber, size: 12);
 
@@ -105,12 +107,12 @@ class ServiceCard extends StatelessWidget {
           categoryName = "Fetching category...";
         }
 
-        final originalPrice = _parsePrice(service["price"]?.toString());
+        final originalPrice = _parsePrice(serviceModel.price.toString());
         final discountedPrice = _calculateDiscountedPrice(
-          service["price"]?.toString(),
-          service["discount"]?.toDouble(),
+          serviceModel.price.toString(),
+          serviceModel.discount.toDouble(),
         );
-        final discount = service["discount"]?.toDouble() ?? 0;
+        final discount = serviceModel.discount.toDouble();
 
         return SingleChildScrollView(
           child: Padding(
@@ -122,7 +124,7 @@ class ServiceCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      service["name"]?.toString() ?? "Unnamed Service",
+                      serviceModel.name.toString(),
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
@@ -144,7 +146,7 @@ class ServiceCard extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: CachedNetworkImage(
-                    imageUrl: service["imageUrl"]?.toString() ?? "",
+                    imageUrl: serviceModel.imageUrl.toString(),
                     height: 120,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -167,7 +169,7 @@ class ServiceCard extends StatelessWidget {
                 _buildDetailRow("Category", categoryName),
                 _buildDetailRow(
                   "Estimated Time",
-                  service["estimatedTime"]?.toString() ?? "N/A",
+                  serviceModel.estimatedTime.toString(),
                 ),
                 _buildDetailRow(
                   "Price",
@@ -177,7 +179,7 @@ class ServiceCard extends StatelessWidget {
                 ),
                 _buildDetailRow(
                   "Rating",
-                  "${service["rating"]?.toString() ?? "N/A"} (${service["reviews"]?.toString() ?? "0"} reviews)",
+                  "${serviceModel.rating.toString()} (${serviceModel.reviews.toString()} reviews)",
                 ),
                 const SizedBox(height: 12),
                 const Text(
@@ -191,7 +193,7 @@ class ServiceCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  service["details"]?.toString() ?? "No details available",
+                  serviceModel.details.toString(),
                   style: TextStyle(
                     fontSize: 13,
                     color: Colors.grey[700],
@@ -243,12 +245,12 @@ class ServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final originalPrice = _parsePrice(service["price"]?.toString());
+    final originalPrice = _parsePrice(serviceModel.price.toString());
     final discountedPrice = _calculateDiscountedPrice(
-      service["price"]?.toString(),
-      service["discount"]?.toDouble(),
+      serviceModel.price.toString(),
+      serviceModel.discount.toDouble(),
     );
-    final discount = service["discount"]?.toDouble() ?? 0;
+    final discount = serviceModel.discount.toDouble();
 
     return SizedBox(
       width: 160,
@@ -278,27 +280,12 @@ class ServiceCard extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        imageUrl: service["imageUrl"]?.toString() ?? "",
+                      child: FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        image: serviceModel.imageUrl,
                         height: 100,
                         width: double.infinity,
                         fit: BoxFit.cover,
-                        memCacheHeight: 100,
-                        memCacheWidth: 160,
-                        fadeInDuration: const Duration(milliseconds: 200),
-                        placeholder:
-                            (context, url) => const Center(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: Colors.blueAccent,
-                              ),
-                            ),
-                        errorWidget:
-                            (context, url, error) => const Icon(
-                              Icons.error,
-                              size: 40,
-                              color: Colors.grey,
-                            ),
                       ),
                     ),
                     Positioned(
@@ -310,7 +297,7 @@ class ServiceCard extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.7),
+                          color: Colors.black.withOpacity(0.5),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Row(
@@ -318,7 +305,7 @@ class ServiceCard extends StatelessWidget {
                             _ratingIcon,
                             const SizedBox(width: 2),
                             Text(
-                              "${service["rating"]?.toString() ?? "N/A"} (${service["reviews"]?.toString() ?? "0"})",
+                              "${serviceModel.rating.toString()} (${serviceModel.reviews.toString()})",
                               style: const TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
@@ -329,13 +316,36 @@ class ServiceCard extends StatelessWidget {
                         ),
                       ),
                     ),
+                    Positioned(
+                      bottom: 4,
+                      left: 4,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.green.withOpacity(0.9),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          "$discount% OFF",
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            letterSpacing: 0.2,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
             const SizedBox(height: 8),
             Text(
-              service["name"]?.toString() ?? "Unnamed Service",
+              serviceModel.name.toString(),
               style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w700,
@@ -347,7 +357,7 @@ class ServiceCard extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              "⏳ ${service["estimatedTime"]?.toString() ?? "N/A"}",
+              "⏳ ${serviceModel.estimatedTime.toString()}",
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
@@ -360,20 +370,21 @@ class ServiceCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    "$discount% OFF",
+                    "₹${discountedPrice.toStringAsFixed(2)}",
                     style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.green,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.blueAccent,
                       letterSpacing: 0.2,
                     ),
                   ),
+
                   const SizedBox(width: 6),
                   Text(
                     "₹${originalPrice.toStringAsFixed(2)}",
                     style: TextStyle(
                       fontSize: 12,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w700,
                       color: Colors.grey[600],
                       decoration: TextDecoration.lineThrough,
                       letterSpacing: 0.1,
@@ -382,15 +393,6 @@ class ServiceCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 2),
-              Text(
-                "₹${discountedPrice.toStringAsFixed(2)}",
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.blueAccent,
-                  letterSpacing: 0.2,
-                ),
-              ),
             ] else ...[
               Text(
                 "₹${originalPrice.toStringAsFixed(2)}",
@@ -407,7 +409,7 @@ class ServiceCard extends StatelessWidget {
               builder: (context, state) {
                 final isBooked =
                     state is ServicesLoaded &&
-                    state.cart.any((item) => item["name"] == service["name"]);
+                    state.cart.any((item) => item.name == serviceModel.name);
                 return SizedBox(
                   width: double.infinity,
                   height: 34,
@@ -416,35 +418,62 @@ class ServiceCard extends StatelessWidget {
                         isBooked
                             ? null
                             : () {
-                              context.read<MainCubit>().addToCart(service);
-                              // ScaffoldMessenger.of(context).showSnackBar(
-                              //   SnackBar(
-                              //     content: Text(
-                              //       "${service["name"]} added to cart",
-                              //     ),
-                              //     duration: const Duration(seconds: 2),
-                              //     backgroundColor: Colors.green,
-                              //   ),
-                              // );
+                              context.read<MainCubit>().addToCart(serviceModel);
                             },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 0),
-                      backgroundColor:
-                          isBooked
-                              ? Colors.grey[400]
-                              : Theme.of(context).colorScheme.primary,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: isBooked ? 0 : 2,
-                      textStyle: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.3,
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.resolveWith<Color>((
+                        states,
+                      ) {
+                        if (isBooked) return Colors.grey.shade300;
+                        if (states.contains(WidgetState.hovered) ||
+                            states.contains(WidgetState.pressed)) {
+                          return Theme.of(context).primaryColor;
+                        }
+                        return Colors.white;
+                      }),
+                      foregroundColor: WidgetStateProperty.resolveWith<Color>((
+                        states,
+                      ) {
+                        if (isBooked) return Colors.grey.shade700;
+                        if (states.contains(WidgetState.hovered) ||
+                            states.contains(WidgetState.pressed)) {
+                          return Colors.white;
+                        }
+                        return Theme.of(context).primaryColor;
+                      }),
+                      side: WidgetStateProperty.resolveWith<BorderSide>((
+                        states,
+                      ) {
+                        if (isBooked) {
+                          return BorderSide(
+                            color: Colors.grey.shade500,
+                            width: 1,
+                          );
+                        }
+                        if (states.contains(WidgetState.pressed)) {
+                          return BorderSide(
+                            color: Colors.grey.shade600,
+                            width: 1,
+                          );
+                        }
+                        return BorderSide(
+                          color: Theme.of(context).primaryColor,
+                          width: 1,
+                        );
+                      }),
+                      shape: WidgetStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            12,
+                          ), // ✅ Fixed BorderRadius 12
+                        ),
                       ),
                     ),
-                    child: Text(isBooked ? "Booked" : "Book Now"),
+
+                    child: Text(
+                      isBooked ? "Added" : "Add Service",
+                      style: TextStyle(fontSize: isBooked ? 12 : 12),
+                    ),
                   ),
                 );
               },
