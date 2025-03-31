@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:service_booking_app/data/model/category_model.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/main/cubit/main_cubit.dart';
-import 'package:service_booking_app/presentation/screens/main/home_carousel.dart';
+import 'package:service_booking_app/presentation/widgets/home_carousel.dart';
 import 'package:service_booking_app/presentation/widgets/category_listview.dart';
 import 'package:service_booking_app/presentation/widgets/services_listview.dart';
 
@@ -15,9 +17,22 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    context.read<MainCubit>().loadCategories();
-    context.read<MainCubit>().loadAllService();
     super.initState();
+
+    final mainCubit = context.read<MainCubit>();
+
+    if (mainCubit.state is! ServicesLoaded) {
+      mainCubit.loadCategories();
+      mainCubit.loadAllService();
+    }
+  }
+
+  Category? selectedCategory;
+
+  void updateSelectedCategory(Category category) {
+    setState(() {
+      selectedCategory = category;
+    });
   }
 
   @override
@@ -29,7 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
         children: [
-          const SizedBox(height: 20),
           if (!isLargeScreen) const _MobileTopBar(),
           Expanded(
             child: Padding(
@@ -54,14 +68,34 @@ class _HomeScreenState extends State<HomeScreen> {
                       const HomeCarousel(),
                       const SizedBox(height: 20),
                     ],
+                    if (isLargeScreen) const SizedBox(height: 30),
                     _buildSectionHeader("Our Services🛠"),
                     const SizedBox(height: 10),
-                    const CategoryListView(),
+                    CategoryListView(
+                      onCategorySelected:
+                          updateSelectedCategory, // ✅ Fixed Callback
+                    ),
                     const SizedBox(height: 20),
-                    _buildSectionHeader("All Services🔥"),
+                    Divider(color: Colors.grey.shade300, thickness: 2),
+                    const SizedBox(height: 5),
+                    _buildSectionHeader(
+                      selectedCategory != null
+                          ? "${selectedCategory!.category} 🔥"
+                          : "All Services 🔥",
+                    ),
                     const SizedBox(height: 10),
                     state is ServicesLoaded
-                        ? const ServicesListView()
+                        ? ServicesListView(
+                          selectedCategory:
+                              selectedCategory ??
+                              Category(
+                                categoryId: 0,
+                                category: "",
+                                icon: "",
+                                basePrice: "",
+                                details: "",
+                              ),
+                        )
                         : const Center(child: CircularProgressIndicator()),
                   ];
 
@@ -102,56 +136,81 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// Extracted MobileTopBar as a const widget
 class _MobileTopBar extends StatelessWidget {
   const _MobileTopBar();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-          child: Row(
+    return BlocBuilder<MainCubit, MainState>(
+      builder: (context, state) {
+        String locationText = "Kolkata, India";
+        if (state is LocationLoaded) {
+          locationText = state.location;
+        } else if (state is LocationError) {
+          log(state.message);
+          locationText = "Location unavailable";
+        }
+
+        return Container(
+          color: Theme.of(context).primaryColor,
+          child: Column(
             children: [
-              Icon(Icons.location_on, color: Colors.grey),
-              SizedBox(width: 5),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Current Location",
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "New York City",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 8,
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.location_on, color: Colors.white),
+                    const SizedBox(width: 5),
+                    GestureDetector(
+                      onTap: () {
+                        // context.read<MainCubit>().fetchLocation();
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Current Location",
+                            style: TextStyle(fontSize: 12, color: Colors.white),
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                locationText,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      Icon(Icons.arrow_drop_down, color: Colors.grey),
-                    ],
-                  ),
-                ],
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      onPressed: null,
+                      icon: const Icon(
+                        Icons.notifications_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              Spacer(),
-              IconButton(
-                onPressed: null, // Disabled for now; add logic if needed
-                icon: Icon(Icons.notifications_outlined),
-              ),
+              const _SearchBar(),
+              const SizedBox(height: 15),
             ],
           ),
-        ),
-        const _SearchBar(),
-      ],
+        );
+      },
     );
   }
 }
 
-// Extracted SearchBar as a const widget
 class _SearchBar extends StatelessWidget {
   const _SearchBar();
 
@@ -166,15 +225,7 @@ class _SearchBar extends StatelessWidget {
           hintStyle: TextStyle(color: Colors.grey[600]),
           filled: true,
           fillColor: Colors.grey[200],
-          contentPadding: const EdgeInsets.symmetric(vertical: 14),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Colors.black12),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
+          contentPadding: const EdgeInsets.symmetric(vertical: 12),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,

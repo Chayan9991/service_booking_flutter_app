@@ -1,16 +1,26 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:service_booking_app/core/common/services_list.dart';
+import 'package:service_booking_app/data/model/category_model.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/main/cubit/main_cubit.dart';
 
 class ServicesListView extends StatelessWidget {
-  const ServicesListView({super.key});
+  final Category selectedCategory;
+  const ServicesListView({super.key, required this.selectedCategory});
 
   @override
   Widget build(BuildContext context) {
     final state = context.read<MainCubit>().state as ServicesLoaded;
-    final services = state.services;
+    final services =
+        selectedCategory.categoryId == 0
+            ? state.services
+            : state.services
+                .where(
+                  (service) =>
+                      service["categoryId"] == selectedCategory.categoryId,
+                )
+                .toList();
+
     final screenWidth = MediaQuery.of(context).size.width;
     final isLargeScreen = screenWidth > 600;
     final padding = isLargeScreen ? 100.0 : 8.0;
@@ -49,7 +59,7 @@ class ServiceCard extends StatelessWidget {
   }
 
   void _showServiceDetailsModal(BuildContext context) {
-    context.read<MainCubit>().loadCategoryByCategoryId(service["categoryId"]);
+    //context.read<MainCubit>().loadCategoryByCategoryId(service["categoryId"]);
     final isLargeScreen = MediaQuery.of(context).size.width > 600;
 
     if (isLargeScreen) {
@@ -85,7 +95,6 @@ class ServiceCard extends StatelessWidget {
   Widget _buildModalContent(BuildContext context) {
     return BlocBuilder<MainCubit, MainState>(
       builder: (context, state) {
-        print("Modal State: $state"); // Debug state
         String categoryName = "Loading...";
         if (state is CategoryLoaded && state.categories.isNotEmpty) {
           categoryName =
@@ -408,15 +417,15 @@ class ServiceCard extends StatelessWidget {
                             ? null
                             : () {
                               context.read<MainCubit>().addToCart(service);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    "${service["name"]} added to cart",
-                                  ),
-                                  duration: const Duration(seconds: 2),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //   SnackBar(
+                              //     content: Text(
+                              //       "${service["name"]} added to cart",
+                              //     ),
+                              //     duration: const Duration(seconds: 2),
+                              //     backgroundColor: Colors.green,
+                              //   ),
+                              // );
                             },
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 0),

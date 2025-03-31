@@ -62,7 +62,7 @@ class CustomTopBar extends StatelessWidget {
           // Navigation Items
           _buildNavItem(Icons.home, "Home", 0),
           const SizedBox(width: 15),
-          _buildNavItem(Icons.category, "Browse", 1),
+          //_buildNavItem(Icons.category, "Browse", 1),
           const SizedBox(width: 15),
           BlocBuilder<MainCubit, MainState>(
             builder: (context, state) {
@@ -70,13 +70,13 @@ class CustomTopBar extends StatelessWidget {
               return _buildNavItemWithBadge(
                 Icons.shopping_cart,
                 "Cart",
-                2,
+                1,
                 cartCount,
               );
             },
           ),
           const SizedBox(width: 15),
-          _buildNavItem(Icons.person, "Profile", 3),
+          _buildNavItem(Icons.person, "Profile", 2),
 
           // Search Bar (Only visible on web)
           if (isLargeScreen) ...[

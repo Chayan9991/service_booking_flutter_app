@@ -1,9 +1,11 @@
+import 'dart:js' as js;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_booking_app/core/dependency_injection/service_locator.dart';
 import 'package:service_booking_app/logic/services/razorpay_service.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/main/cubit/main_cubit.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/payment/cubit/payment_cubit.dart';
+import 'package:service_booking_app/presentation/screens/main/order_receipt_screen.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -14,6 +16,19 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   final RazorpayService _razorpayService = getIt<RazorpayService>();
+
+  @override
+  void initState() {
+    super.initState();
+    js.context['onPaymentSuccessDart'] = (String paymentId) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OrderReceiptScreen(paymentId: paymentId),
+        ),
+      );
+    };
+  }
 
   double _parsePrice(String price, double discount) {
     final value = double.tryParse(price.split('/')[0]) ?? 0.0;
@@ -26,9 +41,15 @@ class _CartScreenState extends State<CartScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Your Cart"),
+        title: Text(
+          "Your Cart",
+          style: TextStyle(color: !isLargeScreen ? Colors.white : Colors.black),
+        ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor:
+            !isLargeScreen
+                ? Theme.of(context).primaryColor
+                : Colors.transparent,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -137,14 +158,6 @@ class _CartScreenState extends State<CartScreen> {
                             icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () {
                               context.read<MainCubit>().removeFromCart(item);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    "${item["name"]} removed from cart",
-                                  ),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
                             },
                           ),
                         ),
@@ -207,8 +220,14 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                       ),
                       const SizedBox(height: 5),
-                      Text("📍 Nagar Mathabhanga, Coochbehar, WB 736146"),
-                      Text("📞 7384064561 | ✉️ barmanchayan10@gmail.com"),
+                      Text(
+                        "📍 Nagar Mathabhanga, Coochbehar, WB 736146",
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                      Text(
+                        "📞 8481051782 | ✉️ himanshukrprasad9112@gmail.com",
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
                     ],
                   ),
                 ),

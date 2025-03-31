@@ -8,86 +8,103 @@ class ProfileScreen extends StatelessWidget {
     final bool isLargeScreen = MediaQuery.of(context).size.width > 600;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Profile"), centerTitle: true),
-      body: Padding(
+      appBar: AppBar(
+        title: const Text("Profile"),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
+      ),
+      body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(
-          horizontal: isLargeScreen ? 300 : 20,
+          horizontal: isLargeScreen ? 250 : 20,
           vertical: 20,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Profile Picture
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: AssetImage(
-                "assets/profile_placeholder.png",
-              ), // Placeholder image
-              backgroundColor: Colors.grey[300],
+            Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.grey[300],
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(60),
+                    child: Image.asset(
+                      "assets/icons/leaf.png",
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.edit, color: Colors.white),
+                  onPressed: () {},
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    padding: const EdgeInsets.all(8),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 12),
-
-            // User Info
             Text(
-              "John Doe", // Replace with actual user data
+              "Himanshu Kr. Prasad",
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             Text(
-              "john.doe@example.com", // Replace with actual user data
+              "himanshukrprasad9112@gmail.com",
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
             const SizedBox(height: 20),
-
-            // User Details
+            ProfileInfoTile(icon: Icons.person, label: "Gender", value: "Male"),
+            ProfileInfoTile(
+              icon: Icons.cake,
+              label: "Date of Birth",
+              value: "10 Jan 2000",
+            ),
             ProfileInfoTile(
               icon: Icons.phone,
               label: "Phone",
-              value: "1234567890",
+              value: "8481051782",
             ),
             ProfileInfoTile(
               icon: Icons.location_on,
               label: "Address",
-              value: "Downtown street 5, New York, USA",
+              value: "128 SP Mukherjee Road, Kalighat, Kolkata, WB 700026",
             ),
-
             const SizedBox(height: 20),
-
-            // Your Bookings Button
-            SizedBox(
-              width: 150,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  // Navigate to bookings page
-                },
-                icon: const Icon(Icons.bookmark, color: Colors.white),
-                label: const Text("Your Bookings"),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  backgroundColor: Theme.of(context).primaryColor,
-                  foregroundColor: Colors.white,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.edit),
+                  label: const Text("Edit Profile"),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-
-            const SizedBox(height: 10),
-
-            // Logout Button
-            SizedBox(
-              width: 150,
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  // Implement logout functionality
-                },
-                icon: const Icon(Icons.logout, color: Colors.red),
-                label: const Text(
-                  "Logout",
-                  style: TextStyle(color: Colors.red),
+                const SizedBox(width: 10),
+                OutlinedButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.logout, color: Colors.red),
+                  label: const Text(
+                    "Logout",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    side: const BorderSide(color: Colors.red),
+                  ),
                 ),
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  side: const BorderSide(color: Colors.red),
-                ),
-              ),
+              ],
             ),
           ],
         ),
@@ -96,7 +113,6 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-// Profile Info Tile Widget
 class ProfileInfoTile extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -112,11 +128,11 @@ class ProfileInfoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 0,
+      elevation: 1,
       margin: const EdgeInsets.symmetric(vertical: 6),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: ListTile(
-        leading: Icon(icon, color: Theme.of(context).primaryColor),
+        leading: Icon(icon, color: Colors.blueAccent),
         title: Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
         subtitle: Text(value, style: TextStyle(color: Colors.grey[600])),
       ),

@@ -30,13 +30,14 @@ final class CategoryLoadError extends MainState {
 
 class ServicesLoaded extends MainState {
   final List<Map<String, dynamic>> services;
-  final List<Map<String, dynamic>> cart; // Added cart
+  final List<Map<String, dynamic>> cart;
 
-  const ServicesLoaded(this.services, {this.cart = const []});
+  const ServicesLoaded(this.services, {required this.cart});
 
   @override
   List<Object> get props => [services, cart];
 }
+
 
 final class ServicesLoadError extends MainState {
   final String message;
@@ -46,7 +47,6 @@ final class ServicesLoadError extends MainState {
   List<Object> get props => [message];
 }
 
-
 //cart
 class CartUpdated extends MainState {
   final List<Map<String, dynamic>> cart;
@@ -55,4 +55,22 @@ class CartUpdated extends MainState {
 
   @override
   List<Object> get props => [cart];
+}
+
+//Location Stated
+
+class LocationLoaded extends MainState {
+  final String location;
+  const LocationLoaded(this.location);
+
+  @override
+  List<Object> get props => [location];
+}
+
+class LocationError extends MainState {
+  final String message;
+  const LocationError(this.message);
+
+  @override
+  List<Object> get props => [message];
 }

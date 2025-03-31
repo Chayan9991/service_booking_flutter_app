@@ -19,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-  const CategoriesScreen(),
+    //  const CategoriesScreen(),
     const CartScreen(),
     const ProfileScreen(),
   ];
@@ -69,10 +69,10 @@ class _MainScreenState extends State<MainScreen> {
                         icon: Icon(Icons.home),
                         label: "Home",
                       ),
-                      const BottomNavigationBarItem(
-                        icon: Icon(Icons.build),
-                        label: "Browse",
-                      ),
+                      // const BottomNavigationBarItem(
+                      //   icon: Icon(Icons.build),
+                      //   label: "Browse",
+                      // ),
                       BottomNavigationBarItem(
                         icon: Stack(
                           children: [

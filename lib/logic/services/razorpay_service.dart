@@ -10,11 +10,11 @@ class RazorpayService {
           "key": "${razorpayTestKey}",
           "amount": ${amount * 100}, // Convert amount to paise
           "currency": "INR",
-          "name": "Your Business Name",
+          "name": "Serve Ease pvt ltd.",
           "description": "Test Transaction",
           "image": "https://your-logo-url.com/logo.png",
           "handler": function (response) {
-              alert('Payment Successful: ' + response.razorpay_payment_id);
+              onPaymentSuccessDart(response.razorpay_payment_id);
           },
           "prefill": {
               "name": "Test User",
