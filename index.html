@@ -1,47 +1,149 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="./">
-
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
-
-  <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="service_booking_app">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>service_booking_app</title>
+  <title>Service Booking App</title>
   <link rel="manifest" href="manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
   <script>
     function openRazorpay(options) {
       var rzp = new Razorpay(options);
       rzp.open();
     }
   </script>
-  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-  
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+    }
+
+    #splash-screen {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: url('splash.jpeg') repeat;
+      background-size: cover;
+      animation: moveBackground 100s linear infinite both;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    @keyframes moveBackground {
+      0% { background-position: right center; }
+      100% { background-position: left center; }
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .overlay div {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .overlay p {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .loader {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid #ffffff;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .overlay div {
+        font-size: 24px;
+      }
+      .overlay p {
+        font-size: 16px;
+      }
+      .loader {
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .overlay div {
+        font-size: 20px;
+      }
+      .overlay p {
+        font-size: 14px;
+      }
+      .loader {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div id="splash-screen">
+    <div class="overlay">
+      <div>Serve Ease</div>
+      <p>Get all services in one app</p>
+      <div class="loader"></div>
+    </div>
+  </div>
+  <script>
+    window.addEventListener("flutter-first-frame", function() {
+      let splashScreen = document.getElementById("splash-screen");
+      if (splashScreen) {
+        splashScreen.style.opacity = "0";
+        setTimeout(() => {
+          splashScreen.style.display = "none";
+        }, 500);
+      }
+    });
+  </script>
+  
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
