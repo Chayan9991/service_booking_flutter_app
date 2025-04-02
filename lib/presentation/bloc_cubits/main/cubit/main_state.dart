@@ -1,4 +1,4 @@
-part of 'main_cubit.dart';
+import 'package:equatable/equatable.dart';
 
 sealed class MainState extends Equatable {
   const MainState();
@@ -18,7 +18,7 @@ final class CategoryLoaded extends MainState {
 
   @override
   List<Object> get props => [categories];
-}
+} 
 
 final class CategoryLoadError extends MainState {
   final String message;
@@ -28,16 +28,14 @@ final class CategoryLoadError extends MainState {
   List<Object> get props => [message];
 }
 
-class ServicesLoaded extends MainState {
+// Services States
+final class ServicesLoaded extends MainState {
   final List<Map<String, dynamic>> services;
-  final List<ServiceModel> cart;
-
-  const ServicesLoaded(this.services, {required this.cart});
+  const ServicesLoaded(this.services);
 
   @override
-  List<Object> get props => [services, cart];
+  List<Object> get props => [services];
 }
-
 
 final class ServicesLoadError extends MainState {
   final String message;
@@ -47,19 +45,8 @@ final class ServicesLoadError extends MainState {
   List<Object> get props => [message];
 }
 
-//cart
-class CartUpdated extends MainState {
-  final List<dynamic> cart;
-
-  const CartUpdated(this.cart);
-
-  @override
-  List<Object> get props => [cart];
-}
-
-//Location Stated
-
-class LocationLoaded extends MainState {
+// Location States
+final class LocationLoaded extends MainState {
   final String location;
   const LocationLoaded(this.location);
 
@@ -67,7 +54,7 @@ class LocationLoaded extends MainState {
   List<Object> get props => [location];
 }
 
-class LocationError extends MainState {
+final class LocationError extends MainState {
   final String message;
   const LocationError(this.message);
 

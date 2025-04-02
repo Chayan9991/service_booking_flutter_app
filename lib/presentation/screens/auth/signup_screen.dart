@@ -9,7 +9,6 @@ import 'package:service_booking_app/core/dependency_injection/service_locator.da
 import 'package:service_booking_app/core/routes/app_routes.dart';
 import 'package:service_booking_app/core/utils/ui_utils.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/auth/cubit/auth_cubit.dart';
-import 'package:service_booking_app/presentation/screens/main/home_screen.dart';
 import 'package:service_booking_app/presentation/screens/main/main_layout.dart';
 
 class SignupScreen extends StatefulWidget {

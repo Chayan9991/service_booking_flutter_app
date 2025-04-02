@@ -3,7 +3,7 @@ import 'package:service_booking_app/core/common/services_list.dart';
 import 'package:service_booking_app/data/model/category_model.dart';
 
 class CategoryListView extends StatefulWidget {
-  final Function(Category) onCategorySelected; // Callback function
+  final Function(CategoryModel) onCategorySelected; // Callback function
 
   const CategoryListView({super.key, required this.onCategorySelected});
 
@@ -36,7 +36,7 @@ class _CategoryListViewState extends State<CategoryListView> {
                   selectedIndex = 0;
                 });
                 widget.onCategorySelected(
-                  Category(
+                  CategoryModel(
                     categoryId: 0,
                     category: "All Services",
                     icon: "",
@@ -50,7 +50,7 @@ class _CategoryListViewState extends State<CategoryListView> {
           }
 
           // Fetch category from list (convert Map to Category object)
-          final category = Category.fromMap(categories[index - 1]);
+          final category = CategoryModel.fromMap(categories[index - 1]);
 
           return _buildCategoryItem(
             context,

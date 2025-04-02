@@ -1,11 +1,11 @@
-class Category {
+class CategoryModel {
   final int categoryId;
   final String category;
   final String icon;
   final String basePrice;
   final String details;
 
-  Category({
+  CategoryModel({
     required this.categoryId,
     required this.category,
     required this.icon,
@@ -14,8 +14,8 @@ class Category {
   });
 
   // ✅ Factory constructor to create Category from Map
-  factory Category.fromMap(Map<String, dynamic> map) {
-    return Category(
+  factory CategoryModel.fromMap(Map<String, dynamic> map) {
+    return CategoryModel(
       categoryId: map['categoryId'] ?? 0,
       category: map['category'] ?? '',
       icon: map['icon'] ?? '',

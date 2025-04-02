@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geocoding/geocoding.dart';
@@ -7,12 +6,13 @@ import 'package:geolocator/geolocator.dart';
 import 'package:service_booking_app/core/common/services_list.dart';
 import 'package:service_booking_app/data/model/services_model.dart';
 
-part 'main_state.dart';
+import 'main_state.dart';
 
 class MainCubit extends Cubit<MainState> {
   MainCubit() : super(MainInitial());
 
-  List<ServiceModel> _cart = []; // Cart list to track selected services
+  List<Map<String, dynamic>> _allServices = []; // Stores all services names
+  List<Map<String, dynamic>> _filteredServices = [];
 
   // Load Categories
   Future<void> loadCategories() async {
@@ -28,13 +28,11 @@ class MainCubit extends Cubit<MainState> {
   Future<void> loadServiceByCategoryId(int categoryId) async {
     try {
       emit(MainLoading());
-
       List<Map<String, dynamic>> filteredServices =
           services
               .where((service) => service["categoryId"] == categoryId)
               .toList();
-
-      emit(ServicesLoaded(filteredServices, cart: _cart));
+      emit(ServicesLoaded(filteredServices));
     } catch (e) {
       emit(ServicesLoadError(e.toString()));
     }
@@ -44,52 +42,40 @@ class MainCubit extends Cubit<MainState> {
   Future<void> loadAllService() async {
     try {
       emit(MainLoading());
-      emit(ServicesLoaded(services, cart: _cart));
+      _allServices = services;
+      _filteredServices = _allServices;
+      emit(ServicesLoaded(_filteredServices));
     } catch (e) {
       emit(ServicesLoadError(e.toString()));
     }
   }
 
-  void addToCart(ServiceModel service) {
-    if (!_cart.any((item) => item.id == service.id)) {
-      _cart = List.from(_cart)..add(service); // Ensure a new list is created
-      final currentState = state;
-      if (currentState is ServicesLoaded) {
-        emit(ServicesLoaded(List.from(currentState.services), cart: _cart));
-      } else {
-        emit(CartUpdated(_cart));
-      }
-    }
-  }
-
-  void removeFromCart(ServiceModel service) {
-    _cart = List.from(_cart)
-      ..removeWhere((item) => item.id == service.id);
-    final currentState = state;
-    if (currentState is ServicesLoaded) {
-      emit(ServicesLoaded(List.from(currentState.services), cart: _cart));
+  // Real time Search Query functionality (Search Items)
+  void updateSearchQuery(String query) {
+    if (query.isEmpty) {
+      _filteredServices = _allServices;
     } else {
-      emit(CartUpdated(_cart));
+      _filteredServices =
+          _allServices
+              .where(
+                (service) => service["name"].toString().toLowerCase().contains(
+                  query.toLowerCase(),
+                ),
+              )
+              .toList();
     }
-  }
-
-  // Clear Cart After Payment Success
-  void clearCart() {
-    _cart = [];
-    emit(CartUpdated(_cart)); // Notify UI that the cart is empty
+    emit(ServicesLoaded(_filteredServices));
   }
 
   // Fetch User Location
   Future<void> fetchLocation() async {
     try {
-      // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         emit(LocationError("Please enable location services."));
         return;
       }
 
-      // Check and request permissions
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
@@ -103,14 +89,12 @@ class MainCubit extends Cubit<MainState> {
         return;
       }
 
-      // Get the current position
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
 
-      log("Latitude: \${position.latitude}, Longitude: \${position.longitude}");
+      log("Latitude: ${position.latitude}, Longitude: ${position.longitude}");
 
-      // Convert lat/lon to an address
       List<Placemark> placemarks = await placemarkFromCoordinates(
         position.latitude,
         position.longitude,
@@ -121,11 +105,11 @@ class MainCubit extends Cubit<MainState> {
       }
 
       Placemark place = placemarks.first;
-      String address = "\${place.locality}, \${place.country}";
+      String address = "${place.locality}, ${place.country}";
 
       emit(LocationLoaded(address));
     } catch (e) {
-      emit(LocationError("Failed to retrieve location: \$e"));
+      emit(LocationError("Failed to retrieve location: $e"));
     }
   }
 }

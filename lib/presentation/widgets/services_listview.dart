@@ -1,12 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_booking_app/data/model/category_model.dart';
 import 'package:service_booking_app/data/model/services_model.dart';
+import 'package:service_booking_app/presentation/bloc_cubits/cart/cubit/cart_cubit.dart';
+import 'package:service_booking_app/presentation/bloc_cubits/cart/cubit/cart_state.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/main/cubit/main_cubit.dart';
+import 'package:service_booking_app/presentation/bloc_cubits/main/cubit/main_state.dart';
 
 class ServicesListView extends StatelessWidget {
-  final Category selectedCategory;
+  final CategoryModel selectedCategory;
   const ServicesListView({super.key, required this.selectedCategory});
 
   @override
@@ -392,11 +394,13 @@ class ServiceCard extends StatelessWidget {
               ),
             ],
             const SizedBox(height: 10),
-            BlocBuilder<MainCubit, MainState>(
+            BlocBuilder<CartCubit, CartState>(
               builder: (context, state) {
-                final isBooked =
-                    state is ServicesLoaded &&
-                    state.cart.any((item) => item.name == serviceModel.name);
+                final cart = state is CartUpdated ? state.cart : [];
+                final isBooked = cart.any(
+                  (item) => item.name == serviceModel.name,
+                );
+
                 return SizedBox(
                   width: double.infinity,
                   height: 34,
@@ -405,7 +409,7 @@ class ServiceCard extends StatelessWidget {
                         isBooked
                             ? null
                             : () {
-                              context.read<MainCubit>().addToCart(serviceModel);
+                              context.read<CartCubit>().addToCart(serviceModel);
                             },
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.resolveWith<Color>((
@@ -450,17 +454,14 @@ class ServiceCard extends StatelessWidget {
                       }),
                       shape: WidgetStateProperty.all(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            12,
-                          ), // ✅ Fixed BorderRadius 12
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                     ),
-
                     child: Text(
-                      isBooked ? "Added" : "Add Service",
-                      style: TextStyle(
-                        fontSize: isBooked ? 12 : 12,
+                      isBooked ? "Added" : "Add to Cart",
+                      style: const TextStyle(
+                        fontSize: 12,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

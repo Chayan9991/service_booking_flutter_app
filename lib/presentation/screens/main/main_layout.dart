@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:service_booking_app/presentation/bloc_cubits/main/cubit/main_cubit.dart';
+import 'package:service_booking_app/presentation/bloc_cubits/cart/cubit/cart_cubit.dart';
+import 'package:service_booking_app/presentation/bloc_cubits/cart/cubit/cart_state.dart';
 import 'package:service_booking_app/presentation/screens/main/cart_screen.dart';
-import 'package:service_booking_app/presentation/screens/main/categories_screen.dart';
 import 'package:service_booking_app/presentation/screens/main/home_screen.dart';
 import 'package:service_booking_app/presentation/screens/main/profile_screen.dart';
 import 'package:service_booking_app/presentation/widgets/custom_topbar.dart';
@@ -50,10 +50,10 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar:
           isLargeScreen
               ? null
-              : BlocBuilder<MainCubit, MainState>(
+              : BlocBuilder<CartCubit, CartState>(
                 builder: (context, state) {
                   final cartCount =
-                      state is ServicesLoaded ? state.cart.length : 0;
+                      state is CartUpdated ? state.cart.length : 0;
                   return BottomNavigationBar(
                     iconSize: 20,
                     selectedLabelStyle: const TextStyle(fontSize: 12),
@@ -108,7 +108,7 @@ class _MainScreenState extends State<MainScreen> {
                         label: "Cart",
                       ),
                       const BottomNavigationBarItem(
-                        icon: Icon(Icons.person),
+                        icon: Icon(Icons.person, size: 22),
                         label: "Profile",
                       ),
                     ],

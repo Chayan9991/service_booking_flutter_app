@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:service_booking_app/presentation/bloc_cubits/cart/cubit/cart_cubit.dart';
+import 'package:service_booking_app/presentation/bloc_cubits/cart/cubit/cart_state.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/main/cubit/main_cubit.dart';
 
-class CustomTopBar extends StatelessWidget {
+class CustomTopBar extends StatefulWidget {
   final int selectedIndex;
   final Function(int) onNavTap;
 
@@ -11,6 +13,19 @@ class CustomTopBar extends StatelessWidget {
     required this.selectedIndex,
     required this.onNavTap,
   });
+
+  @override
+  State<CustomTopBar> createState() => _CustomTopBarState();
+}
+
+class _CustomTopBarState extends State<CustomTopBar> {
+  final queryController = TextEditingController();
+
+  @override
+  void dispose() {
+    queryController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +79,9 @@ class CustomTopBar extends StatelessWidget {
           const SizedBox(width: 15),
           //_buildNavItem(Icons.category, "Browse", 1),
           const SizedBox(width: 15),
-          BlocBuilder<MainCubit, MainState>(
+          BlocBuilder<CartCubit, CartState>(
             builder: (context, state) {
-              final cartCount = state is ServicesLoaded ? state.cart.length : 0;
+              final cartCount = state is CartUpdated ? state.cart.length : 0;
               return _buildNavItemWithBadge(
                 Icons.shopping_cart,
                 "Cart",
@@ -81,7 +96,7 @@ class CustomTopBar extends StatelessWidget {
           // Search Bar (Only visible on web)
           if (isLargeScreen) ...[
             const SizedBox(width: 20),
-            _buildSearchBar(context),
+            _buildSearchBar(context, queryController),
           ],
         ],
       ),
@@ -91,12 +106,13 @@ class CustomTopBar extends StatelessWidget {
   // Navigation Item Widget (without badge)
   Widget _buildNavItem(IconData icon, String label, int index) {
     return GestureDetector(
-      onTap: () => onNavTap(index),
+      onTap: () => widget.onNavTap(index),
       child: Row(
         children: [
           Icon(
             icon,
-            color: selectedIndex == index ? Colors.white : Colors.white70,
+            color:
+                widget.selectedIndex == index ? Colors.white : Colors.white70,
           ),
           const SizedBox(width: 5),
           Text(
@@ -104,7 +120,8 @@ class CustomTopBar extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w500,
-              color: selectedIndex == index ? Colors.white : Colors.white70,
+              color:
+                  widget.selectedIndex == index ? Colors.white : Colors.white70,
             ),
           ),
         ],
@@ -120,7 +137,7 @@ class CustomTopBar extends StatelessWidget {
     int cartCount,
   ) {
     return GestureDetector(
-      onTap: () => onNavTap(index),
+      onTap: () => widget.onNavTap(index),
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -128,7 +145,10 @@ class CustomTopBar extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: selectedIndex == index ? Colors.white : Colors.white70,
+                color:
+                    widget.selectedIndex == index
+                        ? Colors.white
+                        : Colors.white70,
               ),
               const SizedBox(width: 5),
               Text(
@@ -136,7 +156,10 @@ class CustomTopBar extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: selectedIndex == index ? Colors.white : Colors.white70,
+                  color:
+                      widget.selectedIndex == index
+                          ? Colors.white
+                          : Colors.white70,
                 ),
               ),
             ],
@@ -169,10 +192,17 @@ class CustomTopBar extends StatelessWidget {
   }
 
   // Search Bar (Only Visible on Web)
-  Widget _buildSearchBar(BuildContext context) {
+  Widget _buildSearchBar(
+    BuildContext context,
+    TextEditingController queryController,
+  ) {
     return SizedBox(
       width: 250,
       child: TextField(
+        controller: queryController,
+        onChanged: (query) {
+          context.read<MainCubit>().updateSearchQuery(query);
+        },
         style: TextStyle(color: Theme.of(context).colorScheme.surface),
         decoration: InputDecoration(
           prefixIcon: Icon(

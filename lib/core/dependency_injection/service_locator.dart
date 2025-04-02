@@ -8,17 +8,16 @@ import 'package:service_booking_app/data/repositories/auth/auth_repo_impl.dart';
 import 'package:service_booking_app/firebase_options.dart';
 import 'package:service_booking_app/logic/services/razorpay_service.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/auth/cubit/auth_cubit.dart';
+import 'package:service_booking_app/presentation/bloc_cubits/cart/cubit/cart_cubit.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/main/cubit/main_cubit.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/payment/cubit/payment_cubit.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
-  WidgetsFlutterBinding.ensureInitialized(); 
+  WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   getIt.registerLazySingleton(() => AppRoutes());
   getIt.registerLazySingleton<FirebaseFirestore>(
@@ -28,8 +27,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton(() => AuthRepoImpl());
   getIt.registerLazySingleton(() => AuthCubit(authRepository: getIt()));
   getIt.registerLazySingleton(() => MainCubit());
+  getIt.registerLazySingleton(() => CartCubit());
   getIt.registerLazySingleton<PaymentCubit>(() => PaymentCubit());
-  getIt.registerLazySingleton<RazorpayService>(
-    () => RazorpayService(),
-  );
+  getIt.registerLazySingleton<RazorpayService>(() => RazorpayService());
 }

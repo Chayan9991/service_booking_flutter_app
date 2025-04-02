@@ -1,7 +1,6 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class UiUtils {
   static void showSnackBar(

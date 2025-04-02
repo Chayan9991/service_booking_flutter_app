@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:service_booking_app/presentation/bloc_cubits/main/cubit/main_cubit.dart';
 
 class OrderReceiptScreen extends StatelessWidget {
   final String paymentId;

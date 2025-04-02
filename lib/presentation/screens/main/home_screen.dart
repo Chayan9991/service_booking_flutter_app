@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:service_booking_app/data/model/category_model.dart';
 import 'package:service_booking_app/presentation/bloc_cubits/main/cubit/main_cubit.dart';
+import 'package:service_booking_app/presentation/bloc_cubits/main/cubit/main_state.dart';
 import 'package:service_booking_app/presentation/widgets/home_carousel.dart';
 import 'package:service_booking_app/presentation/widgets/category_listview.dart';
 import 'package:service_booking_app/presentation/widgets/services_listview.dart';
@@ -27,9 +28,9 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Category? selectedCategory;
+  CategoryModel? selectedCategory;
 
-  void updateSelectedCategory(Category category) {
+  void updateSelectedCategory(CategoryModel category) {
     setState(() {
       selectedCategory = category;
     });
@@ -61,7 +62,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (state is ServicesLoadError) {
                     return const Center(child: Text("Failed to load services"));
                   }
-
                   // Define the list of widgets for lazy loading
                   final children = <Widget>[
                     if (!isLargeScreen) ...[
@@ -72,8 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     _buildSectionHeader("Our Services🛠"),
                     const SizedBox(height: 13),
                     CategoryListView(
-                      onCategorySelected:
-                          updateSelectedCategory, // ✅ Fixed Callback
+                      onCategorySelected: updateSelectedCategory,
                     ),
                     const SizedBox(height: 20),
                     Divider(color: Colors.grey.shade300, thickness: 2),
@@ -84,11 +83,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           : "All Services 🔥",
                     ),
                     const SizedBox(height: 10),
+                    if (state is ServicesLoaded && state.services.isEmpty) ...[
+                      const Center(child: Text("Item Not available😕")),
+                    ],
+
                     state is ServicesLoaded
                         ? ServicesListView(
                           selectedCategory:
                               selectedCategory ??
-                              Category(
+                              CategoryModel(
                                 categoryId: 0,
                                 category: "",
                                 icon: "",
@@ -211,14 +214,32 @@ class _MobileTopBar extends StatelessWidget {
   }
 }
 
-class _SearchBar extends StatelessWidget {
+//mobile screen search bar
+class _SearchBar extends StatefulWidget {
   const _SearchBar();
+
+  @override
+  State<_SearchBar> createState() => _SearchBarState();
+}
+
+class _SearchBarState extends State<_SearchBar> {
+  final TextEditingController queryController = TextEditingController();
+
+  @override
+  void dispose() {
+    queryController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: TextField(
+        controller: queryController,
+        onChanged: (value) {
+          context.read<MainCubit>().updateSearchQuery(value);
+        },
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.search, color: Colors.grey),
           hintText: "Search Services...",
