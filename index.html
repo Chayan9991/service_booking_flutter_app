@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <base href="./">
+  <base href="/">
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
@@ -22,7 +22,7 @@
       rzp.open();
     }
   </script>
- 
+
   <style>
     html, body {
       margin: 0;
@@ -105,34 +105,60 @@
       transform: translate(-50%, -50%);
     }
 
+    #offline-message {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: #f0f2f5;
+      display: none; /* Hidden by default */
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      text-align: center;
+      padding: 20px;
+      color: #333;
+    }
+
+    #offline-message h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    #offline-message p {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    #offline-message button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #1e3c72;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #offline-message button:hover {
+      background: #2a5298;
+    }
+
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
 
     @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Particle effect for background */
     .particles {
       position: absolute;
       width: 100%;
@@ -154,29 +180,19 @@
     }
 
     @media (max-width: 768px) {
-      .logo-text {
-        font-size: 36px;
-      }
-      .tagline {
-        font-size: 18px;
-      }
-      .loader {
-        width: 50px;
-        height: 50px;
-      }
+      .logo-text { font-size: 36px; }
+      .tagline { font-size: 18px; }
+      .loader { width: 50px; height: 50px; }
+      #offline-message h1 { font-size: 24px; }
+      #offline-message p { font-size: 14px; }
     }
 
     @media (max-width: 480px) {
-      .logo-text {
-        font-size: 28px;
-      }
-      .tagline {
-        font-size: 16px;
-      }
-      .loader {
-        width: 40px;
-        height: 40px;
-      }
+      .logo-text { font-size: 28px; }
+      .tagline { font-size: 16px; }
+      .loader { width: 40px; height: 40px; }
+      #offline-message h1 { font-size: 20px; }
+      #offline-message p { font-size: 12px; }
     }
   </style>
 </head>
@@ -191,22 +207,78 @@
     </div>
     <div class="overlay">
       <div class="logo-text">Serve Ease</div>
-      <p class="tagline">Book Services At Ease </p>
+      <p class="tagline">Book Services At Ease</p>
       <div class="loader"></div>
     </div>
   </div>
+  <div id="offline-message">
+    <h1>No Internet Connection</h1>
+    <p>Please check your internet connection and try again.</p>
+    <button onclick="location.reload()">Retry</button>
+  </div>
+
   <script>
-    window.addEventListener("flutter-first-frame", function() {
-      let splashScreen = document.getElementById("splash-screen");
-      if (splashScreen) {
+    // Check internet connectivity
+    function checkOnlineStatus() {
+      return navigator.onLine;
+    }
+
+    // Hide splash screen and show offline message if needed
+    function handleAppLoad() {
+      const splashScreen = document.getElementById("splash-screen");
+      const offlineMessage = document.getElementById("offline-message");
+
+      if (!checkOnlineStatus()) {
+        splashScreen.style.opacity = "0";
+        setTimeout(() => {
+          splashScreen.style.display = "none";
+          offlineMessage.style.display = "flex";
+        }, 800);
+        return;
+      }
+
+      // Timeout to hide splash screen if app doesn't load in 10 seconds
+      const loadTimeout = setTimeout(() => {
+        if (splashScreen.style.display !== "none") {
+          splashScreen.style.opacity = "0";
+          setTimeout(() => {
+            splashScreen.style.display = "none";
+            offlineMessage.style.display = "flex";
+          }, 800);
+        }
+      }, 10000); // 10 seconds timeout
+
+      // Listen for first Flutter frame
+      window.addEventListener("flutter-first-frame", function() {
+        clearTimeout(loadTimeout); // Cancel timeout if app loads
         splashScreen.style.opacity = "0";
         setTimeout(() => {
           splashScreen.style.display = "none";
         }, 800);
+      });
+    }
+
+    // Check connectivity on page load and network changes
+    window.addEventListener("load", handleAppLoad);
+    window.addEventListener("online", () => {
+      const offlineMessage = document.getElementById("offline-message");
+      if (offlineMessage.style.display === "flex") {
+        location.reload(); // Reload when back online
+      }
+    });
+    window.addEventListener("offline", () => {
+      const splashScreen = document.getElementById("splash-screen");
+      const offlineMessage = document.getElementById("offline-message");
+      if (splashScreen.style.display !== "none") {
+        splashScreen.style.opacity = "0";
+        setTimeout(() => {
+          splashScreen.style.display = "none";
+          offlineMessage.style.display = "flex";
+        }, 800);
       }
     });
   </script>
-  
+
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
