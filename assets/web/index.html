@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <base href="./">
+  <base href="$FLUTTER_BASE_HREF">
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
@@ -14,6 +14,7 @@
   <link rel="manifest" href="manifest.json">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
   <script>
     function openRazorpay(options) {
@@ -237,16 +238,15 @@
       }
 
       // Timeout to hide splash screen if app doesn't load in 10 seconds
-      setTimeout(() => {
-  if (splashScreen.style.display !== "none") {
-    splashScreen.style.opacity = "0";
-    setTimeout(() => {
-      splashScreen.style.display = "none";
-      offlineMessage.style.display = "flex";
-    }, 800);
-  }
-}, 15000); // 15 seconds
- 
+      const loadTimeout = setTimeout(() => {
+        if (splashScreen.style.display !== "none") {
+          splashScreen.style.opacity = "0";
+          setTimeout(() => {
+            splashScreen.style.display = "none";
+            offlineMessage.style.display = "flex";
+          }, 800);
+        }
+      }, 10000); // 10 seconds timeout
 
       // Listen for first Flutter frame
       window.addEventListener("flutter-first-frame", function() {
