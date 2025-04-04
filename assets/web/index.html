@@ -1,223 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <base href="$FLUTTER_BASE_HREF">
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="service_booking_app">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-  <link rel="icon" type="image/png" href="favicon.png"/>
-  <title>Service Booking App</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <base href="$FLUTTER_BASE_HREF">
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="description" content="A new Flutter project.">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="service_booking_app">
+    <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    <link rel="icon" type="image/png" href="favicon.png"/>
+    <title>Service Booking App</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script defer src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
-  <script>
-    function openRazorpay(options) {
-      var rzp = new Razorpay(options);
-      rzp.open();
-    }
-  </script>
+    <script>
+        function openRazorpay(options) {
+          var rzp = new Razorpay(options);
+          rzp.open();
+        }
+    </script>
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      font-family: 'Arial', sans-serif;
-      background: #f0f2f5;
-    }
+    <style>
+        html, body {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden;
+          font-family: 'Arial', sans-serif;
+          background: #f0f2f5;
+        }
 
-    #splash-screen {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      transition: opacity 0.8s ease-in-out;
-      overflow: hidden;
-    }
+        #splash-screen {
+          position: fixed;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          z-index: 9999;
+          transition: opacity 0.8s ease-in-out;
+          overflow: hidden;
+        }
 
-    .overlay {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      padding: 40px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    }
+        .overlay {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          padding: 40px;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          border-radius: 15px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
 
-    .logo-text {
-      font-size: 48px;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: 2px;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-      animation: fadeInDown 1s ease-out;
-    }
+        .logo-text {
+          font-size: 48px;
+          font-weight: 700;
+          color: #ffffff;
+          letter-spacing: 2px;
+          margin-bottom: 20px;
+          text-transform: uppercase;
+          animation: fadeInDown 1s ease-out;
+        }
 
-    .tagline {
-      font-size: 20px;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 30px;
-      font-weight: 300;
-      animation: fadeInUp 1s ease-out 0.3s both;
-    }
+        .tagline {
+          font-size: 20px;
+          color: rgba(255, 255, 255, 0.9);
+          margin-bottom: 30px;
+          font-weight: 300;
+          animation: fadeInUp 1s ease-out 0.3s both;
+        }
 
-    .loader {
-      width: 60px;
-      height: 60px;
-      border: 5px solid rgba(255, 255, 255, 0.2);
-      border-top: 5px solid #ffffff;
-      border-radius: 50%;
-      animation: spin 1.2s ease-in-out infinite;
-      position: relative;
-    }
+        .loader {
+          width: 60px;
+          height: 60px;
+          border: 5px solid rgba(255, 255, 255, 0.2);
+          border-top: 5px solid #ffffff;
+          border-radius: 50%;
+          animation: spin 1.2s ease-in-out infinite;
+          position: relative;
+        }
 
-    .loader::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 40px;
-      height: 40px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-    }
+        .loader::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 40px;
+          height: 40px;
+          background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+          border-radius: 50%;
+          transform: translate(-50%, -50%);
+        }
 
-    #offline-message {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: #f0f2f5;
-      display: none; /* Hidden by default */
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
-      text-align: center;
-      padding: 20px;
-      color: #333;
-    }
+        #offline-message {
+          position: fixed;
+          width: 100%;
+          height: 100%;
+          background: #f0f2f5;
+          display: none; /* Hidden by default */
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          z-index: 10000;
+          text-align: center;
+          padding: 20px;
+          color: #333;
+        }
 
-    #offline-message h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
+        #offline-message h1 {
+          font-size: 28px;
+          margin-bottom: 10px;
+        }
 
-    #offline-message p {
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
+        #offline-message p {
+          font-size: 16px;
+          margin-bottom: 20px;
+        }
 
-    #offline-message button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background: #1e3c72;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+        #offline-message button {
+          padding: 10px 20px;
+          font-size: 16px;
+          background: #1e3c72;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+        }
 
-    #offline-message button:hover {
-      background: #2a5298;
-    }
+        #offline-message button:hover {
+          background: #2a5298;
+        }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
 
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        @keyframes fadeInDown {
+          from { opacity: 0; transform: translateY(-20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
 
-    .particles {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      pointer-events: none;
-    }
+        .particles {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          pointer-events: none;
+        }
 
-    .particles span {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      animation: float 15s infinite linear;
-    }
+        .particles span {
+          position: absolute;
+          background: rgba(255, 255, 255, 0.3);
+          border-radius: 50%;
+          animation: float 15s infinite linear;
+        }
 
-    @keyframes float {
-      0% { transform: translateY(100vh) scale(0); }
-      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
-    }
+        @keyframes float {
+          0% { transform: translateY(100vh) scale(0); }
+          100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
 
-    @media (max-width: 768px) {
-      .logo-text { font-size: 36px; }
-      .tagline { font-size: 18px; }
-      .loader { width: 50px; height: 50px; }
-      #offline-message h1 { font-size: 24px; }
-      #offline-message p { font-size: 14px; }
-    }
+        @media (max-width: 768px) {
+          .logo-text { font-size: 36px; }
+          .tagline { font-size: 18px; }
+          .loader { width: 50px; height: 50px; }
+          #offline-message h1 { font-size: 24px; }
+          #offline-message p { font-size: 14px; }
+        }
 
-    @media (max-width: 480px) {
-      .logo-text { font-size: 28px; }
-      .tagline { font-size: 16px; }
-      .loader { width: 40px; height: 40px; }
-      #offline-message h1 { font-size: 20px; }
-      #offline-message p { font-size: 12px; }
-    }
-  </style>
+        @media (max-width: 480px) {
+          .logo-text { font-size: 28px; }
+          .tagline { font-size: 16px; }
+          .loader { width: 40px; height: 40px; }
+          #offline-message h1 { font-size: 20px; }
+          #offline-message p { font-size: 12px; }
+        }
+    </style>
 </head>
 <body>
-  <div id="splash-screen">
+<div id="splash-screen">
     <div class="particles">
-      <span style="left: 10%; width: 8px; height: 8px; animation-delay: 0s;"></span>
-      <span style="left: 30%; width: 6px; height: 6px; animation-delay: 2s;"></span>
-      <span style="left: 50%; width: 10px; height: 10px; animation-delay: 4s;"></span>
-      <span style="left: 70%; width: 7px; height: 7px; animation-delay: 1s;"></span>
-      <span style="left: 90%; width: 9px; height: 9px; animation-delay: 3s;"></span>
+        <span style="left: 10%; width: 8px; height: 8px; animation-delay: 0s;"></span>
+        <span style="left: 30%; width: 6px; height: 6px; animation-delay: 2s;"></span>
+        <span style="left: 50%; width: 10px; height: 10px; animation-delay: 4s;"></span>
+        <span style="left: 70%; width: 7px; height: 7px; animation-delay: 1s;"></span>
+        <span style="left: 90%; width: 9px; height: 9px; animation-delay: 3s;"></span>
     </div>
     <div class="overlay">
-      <div class="logo-text">Serve Ease</div>
-      <p class="tagline">Book Services At Ease</p>
-      <div class="loader"></div>
+        <div class="logo-text">Serve Ease</div>
+        <p class="tagline">Book Services At Ease</p>
+        <div class="loader"></div>
     </div>
-  </div>
-  <div id="offline-message">
+</div>
+<div id="offline-message">
     <h1>No Internet Connection</h1>
     <p>Please check your internet connection and try again.</p>
     <button onclick="location.reload()">Retry</button>
-  </div>
+</div>
 
-  <script>
+<script>
     // Check internet connectivity
     function checkOnlineStatus() {
       return navigator.onLine;
@@ -246,7 +246,7 @@
             offlineMessage.style.display = "flex";
           }, 800);
         }
-      }, 10000); // 10 seconds timeout
+      }, 15000); // 10 seconds timeout
 
       // Listen for first Flutter frame
       window.addEventListener("flutter-first-frame", function() {
@@ -277,8 +277,8 @@
         }, 800);
       }
     });
-  </script>
+</script>
 
-  <script src="flutter_bootstrap.js" async></script>
+<script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
