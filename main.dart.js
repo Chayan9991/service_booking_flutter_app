@@ -92808,7 +92808,7 @@ m=A.pG(!p?A.U(a).dx:B.B,q,!0,q,q,q,q,q,m)
 s=p?100:8
 r=p?0:15
 return A.kN(m,q,new A.bu(new A.ar(s,r,s,r),A.ni(q,new A.arz(this),o,n),q),q,q,q,!1,q,q,q,q)},
-MV(a,b){var s,r,q,p=null,o="himanshu",n=B.d.a4(b*1.05,2),m=t.p,l=A.d7(A.b([B.Xu,A.aE("\u20b9"+B.d.a4(b,2),p,p,p,p,B.A5,p,p)],m),B.C,B.cU,B.t),k=A.d7(A.b([B.XD,A.aE("\u20b9"+B.d.a4(b*0.05,2),p,p,p,p,B.A5,p,p)],m),B.C,B.cU,B.t),j=A.d7(A.b([B.Xx,A.aE("\u20b9"+n,p,p,p,p,B.Vz,p,p)],m),B.C,B.cU,B.t),i=a.length===0?p:new A.ars(this,n),h=this.c
+MV(a,b){var s,r,q,p=null,o="chayan",n=B.d.a4(b*1.05,2),m=t.p,l=A.d7(A.b([B.Xu,A.aE("\u20b9"+B.d.a4(b,2),p,p,p,p,B.A5,p,p)],m),B.C,B.cU,B.t),k=A.d7(A.b([B.XD,A.aE("\u20b9"+B.d.a4(b*0.05,2),p,p,p,p,B.A5,p,p)],m),B.C,B.cU,B.t),j=A.d7(A.b([B.Xx,A.aE("\u20b9"+n,p,p,p,p,B.Vz,p,p)],m),B.C,B.cU,B.t),i=a.length===0?p:new A.ars(this,n),h=this.c
 h.toString
 h=A.dk(A.aCZ(!1,B.Xt,p,p,p,p,p,p,i,p,A.aHJ(p,p,A.U(h).ax.b,p,p,p,p,p,p,B.f,p,p,p,p,new A.c4(A.bN(10),B.o),p,p,p,p,p)),45,1/0)
 i=A.aE("Terms & Conditions | Refund Policy | Privacy Policy",p,p,p,p,A.ch(p,p,B.bD,p,p,p,p,p,p,p,p,12,p,p,p,p,p,!0,p,p,p,p,p,p,p,p),p,p)
@@ -93117,7 +93117,7 @@ A.ahw.prototype={
 $1(a){return a.gvo()},
 $S:224}
 A.QL.prototype={
-H(a){var s,r,q,p,o,n,m,l,k,j=this,i=null,h="himanshu",g=A.b9(a,i,t.w).w.a.a>600,f=A.aE("Profile",i,i,i,i,A.ch(i,i,g?B.z:B.f,i,i,i,i,i,i,i,i,i,i,i,i,i,i,!0,i,i,i,i,i,i,i,i),i,i)
+H(a){var s,r,q,p,o,n,m,l,k,j=this,i=null,h="chayan",g=A.b9(a,i,t.w).w.a.a>600,f=A.aE("Profile",i,i,i,i,A.ch(i,i,g?B.z:B.f,i,i,i,i,i,i,i,i,i,i,i,i,i,i,!0,i,i,i,i,i,i,i,i),i,i)
 f=A.pG(g?B.f:A.U(a).dx,i,!0,0,i,B.jR,i,i,f)
 s=g?200:16
 r=A.aGU(new A.uc("assets/icons/leaf.png",i,i),40)
